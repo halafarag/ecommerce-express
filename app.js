@@ -5,7 +5,12 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/Ecommerce").then(() => {
+const db = process.env.DB.replace(
+  "<userName>",
+  process.env.DB_USERNAME
+).replace("<password>", process.env.DB_PASSWORD);
+
+mongoose.connect(db).then(() => {
   console.log("you connected to mongoDB");
 });
 const PORT = process.env.PORT || 5000;
