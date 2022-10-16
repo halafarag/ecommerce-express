@@ -8,6 +8,7 @@ const productShema = new Schema({
     maxLength: 100,
     required: true,
     trim: true,
+    unique: true,
   },
   description: {
     type: String,
@@ -27,5 +28,5 @@ const productShema = new Schema({
   },
 });
 
-const productModel = mongoose.model("Product", productShema);
-module.exports = productModel;
+const Product = mongoose.model("Product", productShema);
+module.exports = Product;
