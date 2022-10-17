@@ -15,12 +15,11 @@ const productShema = new Schema({
   },
   productUrl: {
     type: String,
-    required: true,
     trim: true,
   },
   sellerId: {
     type: mongoose.Schema.ObjectId,
-    ref: "seller",
+    ref: "Seller",
   },
   creationDate: {
     type: Date,
