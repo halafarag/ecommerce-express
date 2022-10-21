@@ -5,7 +5,8 @@ async function getAllProduct(req, res, next) {
     const allProduct = await Product.find();
     res.status(200).json(allProduct);
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(500);
+    next(err);
   }
 }
 
@@ -41,21 +42,21 @@ async function getBySkip(req, res, next) {
 async function updateProduct(req, res) {
   try {
     var id = req.params.id;
-    const updatedUser = req.body;
-    var newUser = await Product.findByIdAndUpdate(id, updatedUser, {
+    const updatedProduct = req.body;
+    var newProduct = await Product.findByIdAndUpdate(id, updatedProduct, {
       new: true,
     });
-    res.status(200).json(newUser);
+    res.status(200).json(newProduct);
   } catch (err) {
     res.status(500).json(err.message);
   }
 }
 //delete by id
-async function deleteUser(req, res) {
+async function deleteProduct(req, res) {
   try {
     var id = req.params.id;
-    var deletedUser = await Product.findByIdAndDelete(id);
-    res.status(204).json(deletedUser);
+    var deletedProduct = await Product.findByIdAndDelete(id);
+    res.status(204).json(deletedProduct);
   } catch (err) {
     res.status(422).json({ status: "failed", message: `${err.message}` });
   }
@@ -76,6 +77,6 @@ module.exports = {
   addProduct,
   getBySkip,
   updateProduct,
-  deleteUser,
+  deleteProduct,
   getById,
 };

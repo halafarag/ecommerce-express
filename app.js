@@ -1,14 +1,15 @@
 const express = require("express");
 const productRoute = require("./routes/productRoute");
+const userRoute = require("./routes/userRoute");
+const sellerRoute = require("./routes/sellerRoute");
 var cors = require("cors");
+const morgan = require("morgan");
 
 const app = express();
 
 app.use(express.json());
-app.use("/*", (req, res, next) => {
-  console.log(req.method, req.url);
-  next();
-});
+app.use(morgan());
+
 app.use(
   cors({
     origin: "*",
@@ -17,5 +18,11 @@ app.use(
 );
 
 app.use("/products", productRoute);
+app.use("/users", userRoute);
+app.use("/sellers", sellerRoute);
+
+app.use((err, req, res, next) => {
+  res.json({ status: "failed", message: err.message });
+});
 
 module.exports = app;
