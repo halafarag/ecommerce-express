@@ -1,5 +1,6 @@
 const Seller = require("../models/seller");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 //add new seller
 async function addSeller(req, res) {
   try {

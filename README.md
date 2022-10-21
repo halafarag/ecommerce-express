@@ -2,6 +2,15 @@
 
 ### Todo
 
+// products seller user order
+
+<!-- products eidt delete get by id get all quer/ upddate -->
+<!-- postman request route  -->
+<!-- seller sign in / up -->
+<!-- user login/register  -->
+<!-- order add new order  -->
+<!-- isAuth=>is seller/not is registed or not  -->
+
 - isAuth midlleware
 - login/signup for seller /user
 - use ia auth in products route

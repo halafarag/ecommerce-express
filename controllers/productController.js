@@ -1,23 +1,28 @@
 const Product = require("../models/product");
+const Seller = require("../models/seller");
 //get all product
 async function getAllProduct(req, res, next) {
   try {
-    const allProduct = await Product.find();
+    // products?seller=ahmed
+    let filter = {};
+    const { seller: sellerName, name: productName } = req.query;
+
+    if (sellerName) {
+      let seller = await Seller.findOne({ name: sellerName });
+      // {sellerId : seller._id}
+      filter.sellerId = seller._id;
+    }
+    // {}
+    //  {sellerId : seller._id,name:productName}
+    if (productName) filter.name = productName;
+    //  {sellerId : seller._id}
+    // {}
+
+    const allProduct = await Product.find(filter);
     res.status(200).json(allProduct);
   } catch (err) {
     res.status(500);
     next(err);
-  }
-}
-
-//addProduct
-async function addProduct(req, res, next) {
-  try {
-    const newProduct = req.body;
-    const result = await Product.create(newProduct);
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(422).json(err);
   }
 }
 //get using skip and limit
@@ -36,6 +41,17 @@ async function getBySkip(req, res, next) {
     }
   } catch (err) {
     res.status(400).json(err.message);
+  }
+}
+
+//addProduct
+async function addProduct(req, res, next) {
+  try {
+    const newProduct = req.body;
+    const result = await Product.create(newProduct);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(422).json(err);
   }
 }
 //patch
