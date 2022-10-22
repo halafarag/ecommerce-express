@@ -8,7 +8,7 @@ router.all("/", (req, res, next) => {
   req.ahmed = "maher";
   next();
 });
-router.get("/", productController.getBySkip);
+// router.get("/", productController.getBySkip);
 //getAllProduct
 router.get("/", productController.getAllProduct);
 //addProduct
@@ -18,5 +18,5 @@ router.patch("/:id", auth, productController.updateProduct);
 //delete
 router.delete("/:id", auth, productController.deleteProduct);
 //get by id
-router.get("/:id", productController.getById);
+router.get("/:id", auth, productController.getById);
 module.exports = router;

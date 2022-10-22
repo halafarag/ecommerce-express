@@ -25,25 +25,6 @@ async function getAllProduct(req, res, next) {
     next(err);
   }
 }
-//get using skip and limit
-async function getBySkip(req, res, next) {
-  try {
-    var skip = parseInt(req.query.skip);
-    var limit = parseInt(req.query.limit);
-    console.log(skip, limit);
-    if (!limit && !skip) {
-      next();
-    } else {
-      let results = await Product.find()
-        .limit(limit ? limit : 0)
-        .skip(skip ? skip : 0);
-      res.status(200).json(results);
-    }
-  } catch (err) {
-    res.status(400).json(err.message);
-  }
-}
-
 //addProduct
 async function addProduct(req, res, next) {
   try {
@@ -89,9 +70,14 @@ async function updateProduct(req, res, next) {
 //delete by id
 async function deleteProduct(req, res) {
   try {
+    const seller = await Seller.findById(req.userId);
     var id = req.params.id;
-    var deletedProduct = await Product.findByIdAndDelete(id);
-    res.status(204).json(deletedProduct);
+    if (seller && seller.products.includes(id)) {
+      var deletedProduct = await Product.findByIdAndDelete(id);
+      res.status(204).json(deletedProduct);
+    } else {
+      res.status(422).json("prouctId incorrect or you are not authenticated");
+    }
   } catch (err) {
     res.status(422).json({ status: "failed", message: `${err.message}` });
   }
@@ -99,9 +85,14 @@ async function deleteProduct(req, res) {
 //get by id
 async function getById(req, res) {
   try {
-    var productId = req.params.id;
-    var found = await Product.findById(productId);
-    res.status(200).json(found);
+    const seller = await Seller.findById(req.userId);
+    if (seller && seller.products.includes(id)) {
+      var productId = req.params.id;
+      var found = await Product.findById(productId);
+      res.status(200).json(found);
+    } else {
+      res.status(422).json("prouctId incorrect or you are not authenticated");
+    }
   } catch (err) {
     res.status(422).json(err);
   }
@@ -110,7 +101,6 @@ async function getById(req, res) {
 module.exports = {
   getAllProduct,
   addProduct,
-  getBySkip,
   updateProduct,
   deleteProduct,
   getById,
