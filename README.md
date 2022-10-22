@@ -4,10 +4,11 @@
 
 // products seller user order
 
-<!-- products eidt delete get by id get all quer/ upddate -->
-<!-- postman request route  -->
-<!-- seller sign in / up -->
-<!-- user login/register  -->
+-- done _ products eidt delete get by id get all quer/ upddate
+-- done _ postman request route
+-- done _ seller sign in / up
+-- done _ user login/register
+
 <!-- order add new order  -->
 <!-- isAuth=>is seller/not is registed or not  -->
 

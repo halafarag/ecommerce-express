@@ -47,24 +47,43 @@ async function getBySkip(req, res, next) {
 //addProduct
 async function addProduct(req, res, next) {
   try {
-    const newProduct = req.body;
-    const result = await Product.create(newProduct);
-    res.status(201).json(result);
+    const seller = await Seller.findById(req.userId);
+    if (seller) {
+      const newProduct = req.body;
+      newProduct.sellerId = seller._id;
+      const result = await Product.create(newProduct);
+      seller.products.push(result.id);
+      await seller.save();
+
+      res.status(201).json(result);
+    } else {
+      throw new Error("you Need to be A seller ");
+    }
   } catch (err) {
-    res.status(422).json(err);
+    res.status(422);
+    next(err);
   }
 }
 //patch
-async function updateProduct(req, res) {
+async function updateProduct(req, res, next) {
   try {
+    // if there is a seller and seller products containt the product id
+    // do the action
+    //throw new error  else un authrized to do yjay
+    const seller = await Seller.findById(req.userId);
     var id = req.params.id;
-    const updatedProduct = req.body;
-    var newProduct = await Product.findByIdAndUpdate(id, updatedProduct, {
-      new: true,
-    });
-    res.status(200).json(newProduct);
+    if (seller && seller.products.includes(id)) {
+      const updatedProduct = req.body;
+      var newProduct = await Product.findByIdAndUpdate(id, updatedProduct, {
+        new: true,
+      });
+      res.status(200).json(newProduct);
+    } else {
+      throw new Error("you need to be A seller ");
+    }
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(500);
+    next(err);
   }
 }
 //delete by id

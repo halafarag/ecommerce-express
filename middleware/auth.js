@@ -9,7 +9,7 @@ function auth(req, res, next) {
       next();
     }
     if (err) {
-      res.status(401).json("you must be authenticated to save new todo");
+      res.status(401).json("you must be authenticated");
     }
   });
 }
